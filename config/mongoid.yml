@@ -5,7 +5,7 @@ development:
     default:
       # Defines the name of the default database that Mongoid can connect to.
       # (required).
-      database: demo_mongodb_rails_development
+      database: demo_mongodb_rails
       # Provides the hosts the default session can connect to. Must be an array
       # of host:port pairs. (required)
       hosts:
@@ -27,13 +27,13 @@ development:
         # The time in seconds that Moped should wait before retrying an
         # operation on failure. (default: 0.25)
         # retry_interval: 0.25
-        
+
         # The connection pool size per-node.  This should match or exceed the
         # number of threads for a multi-threaded application. (default: 5)
         # pool_size: 5
-        
+
         # The time in seconds that Moped should wait for the pool to provide
-        # an available connection.  This number should probably remain at the 
+        # an available connection.  This number should probably remain at the
         # default, unless for some reason you absolutely need to limit the
         # pool_size, as this wait is only used when the pool is saturated.
         # (default: 0.5)
@@ -42,23 +42,46 @@ development:
         # The time in seconds before Moped will timeout connection and node
         # operations. (default: 5)
         # timeout: 5
-        
-        # The amount of time in seconds between forced refreshes of node 
+
+        # The amount of time in seconds between forced refreshes of node
         # information including the discovery of new peers. (default: 300)
         # refresh_interval: 300
-        
+
         # The amount of time in seconds that a node will be flagged as down.
-        # (default: 30) 
+        # (default: 30)
         # down_interval: 30
-        
+
         # Whether connections should use SSL. (default: nil/false)
         # ssl: false
-        
+
         # Whether Moped will use the existing seeds/nodes to find other peers.
         # (default: true)
         # auto_discover: true
-
-
+     # This defines a secondary session at a replica set.
+    # replica_set:
+      # This configuration is a 3 node replica set.
+      # hosts:
+        # - dedicated1.myapp.com:27017
+        # - dedicated2.myapp.com:27017
+        # - dedicated3.myapp.com:27017
+      # database: mongoid
+      # We can set session specific options, like reads executing
+      # on secondary nodes, and defaulting the session to safe mode.
+      # options:
+        # read: :secondary
+        # write:
+          # w: :majority
+    # This defines a tertiary session at a Mongos fronted shard.
+    # shard:
+      # This configuration is a Mongos shard server.
+      # hosts:
+        # - mongos.myapp.com:27017
+      # database: mongoid
+    # This configuration shows an authenticated replica set via a uri.
+    # another:
+      # uri: mongodb://user:pass@59.1.22.1:27017,59.1.22.2:27017/mongoid
+  # Here we put the Mongoid specific configuration options. These are explained
+  # in more detail next.
   # Configure Mongoid specific options. (optional)
   options:
     # Includes the root model name in json serialization. (default: false)
@@ -99,3 +122,17 @@ test:
         # low amounts for fast failures.
         max_retries: 1
         retry_interval: 0
+# ADD mode production for app
+production:
+  # Configure available database sessions. (required)
+  sessions:
+    # Defines the default session. (required)
+    default:
+      # Defines the name of the default database that Mongoid can connect to.
+      # (required).
+      database: demo_mongodb_rails_pro
+      # Provides the hosts the default session can connect to. Must be an array
+      # of host:port pairs. (required)
+      hosts:
+        - localhost:27017
+      options:
